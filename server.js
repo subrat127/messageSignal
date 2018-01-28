@@ -1,57 +1,23 @@
-var WebSocketServer = require('ws').Server;
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080 ;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+
 var http = require('http');
 
-var ipaddr  = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
-var port      = process.env.OPENSHIFT_NODEJS_PORT || 8000
 
+// Loading the index file . html displayed to the client
+var server = http.createServer(function(req, res) {
+        res.writeHead(200, {"Content-Type": "text/html"});
+        res.end("Hi Welcome to first Project.! ");
+    
+});
 
-/*var io = require('socket.io').listen(16000,ipaddr);
+// Loading socket.io
+var io = require('socket.io').listen(server);
 
+// When a client connects, we note it in the console
 io.sockets.on('connection', function (socket) {
-  console.log('io connection');
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
-console.log('io listening on port 16000');
-*/  
-var server = http.createServer();
-//var wss = new WebSocketServer({server: server, path: '/connect'});
-
-var  wss = new WebSocketServer({server:server})
-console.log(wss);
-wss.on('connection', function(ws) {
-    console.log('/connection connected');
-    ws.on('message', function(data, flags) {
-        if (flags.binary) { return; }
-        console.log('>>> ' + data);
-        if (data == 'test') { console.log('test'); ws.send('got test'); }
-        if (data == 'hello') { console.log('hello'); ws.send('WAZZZUP!'); }
-    });
-    ws.on('close', function() {
-      console.log('Connection closed!');
-    });
-    ws.on('error', function(e) {
-      console.log(e);
-    });
+    console.log('A client is connected!');
 });
 
-wss.on('connect', function(ws) {
-    console.log('/connect connected');
-    ws.on('message', function(data, flags) {
-        if (flags.binary) { return; }
-        console.log('>>> ' + data);
-        if (data == 'test') { console.log('test'); ws.send('got test'); }
-        if (data == 'hello') { console.log('hello'); ws.send('WAZZZUP!'); }
-    });
-    ws.on('close', function() {
-      console.log('Connection closed!');
-    });
-    ws.on('error', function(e) {
-      console.log(e);
-    });
-});
 
-console.log('Listening at IP ' + ipaddr +' on port '+port);
-server.listen(port,ipaddr);
+server.listen(8080);
