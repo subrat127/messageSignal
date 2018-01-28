@@ -15,7 +15,7 @@ var server = http.createServer(function(req, res) {
 });
 
 // Loading socket.io
-var io = require('socket.io').listen(server);
+var io = require('socket.io',{ transports: ['websocket']}).listen(server);
 
 // When a client connects, we note it in the console
 io.sockets.on('connection', function (socket) {
