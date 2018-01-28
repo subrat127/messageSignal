@@ -29,7 +29,7 @@
   },
   "devDependencies": {},
   "bundleDependencies": [],
-  "private": false,
+  "private": true,
     "scripts": {
   "start": "node server.js"
 },
